@@ -116,9 +116,12 @@ async function initBot() {
   // Verificar autenticación antes de iniciar el cron
   const isAuthenticated = await verifyCredentials();
   if (isAuthenticated) {
-    // Programar las publicaciones dos veces al día (10:00 y 18:00)
-    cron.schedule("0 10,18,23 * * *", () => {
+    
+    cron.schedule("0 8,16,21 * * *", () => {
       postVideo();
+    }, {
+      scheduled: true,
+      timezone: "America/Santiago"
     });
     console.log(
       "Bot programado para publicar dos veces al día (10:00 y 18:00)...",
