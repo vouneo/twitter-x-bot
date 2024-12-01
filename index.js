@@ -50,7 +50,7 @@ async function verifyCredentials() {
 async function getVideoList() {
   try {
     const data = await fs.readFile("videos.json", "utf8");
-    return JSON.parse(data).videos; // Asumiendo que el JSON tiene una propiedad "videos"
+    return JSON.parse(data).videos;
   } catch (error) {
     console.error("Error al leer el archivo de videos:", error);
     return [];
@@ -113,22 +113,16 @@ async function initBot() {
   await loadLastIndex();
   console.log("Índice inicial cargado:", currentVideoIndex);
 
-  // Verificar autenticación antes de intentar postear
+  // Verificar autenticación antes de iniciar el cron
   const isAuthenticated = await verifyCredentials();
   if (isAuthenticated) {
-    console.log("Ejecutando prueba inmediata...");
-    const result = await postVideo();
-    if (result) {
-      console.log("Tweet de prueba publicado correctamente");
-    }
-
-    // Comentado por ahora para pruebas
-    /*
-        cron.schedule('0 10,18 * * *', () => {
-            postVideo();
-        });
-        console.log('Bot programado para publicar dos veces al día...');
-        */
+    // Programar las publicaciones dos veces al día (10:00 y 18:00)
+    cron.schedule("0 10,18 * * *", () => {
+      postVideo();
+    });
+    console.log(
+      "Bot programado para publicar dos veces al día (10:00 y 18:00)...",
+    );
   } else {
     console.log(
       "No se puede ejecutar el bot debido a problemas de autenticación",
