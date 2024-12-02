@@ -117,7 +117,7 @@ async function initBot() {
   const isAuthenticated = await verifyCredentials();
   if (isAuthenticated) {
     
-    cron.schedule("0 8,16,21 * * *", () => {
+    cron.schedule("0 8,16,22 * * *", () => {
       postVideo();
     }, {
       scheduled: true,
